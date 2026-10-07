@@ -1,0 +1,55 @@
+{
+  "name": "@auvryn/mcp",
+  "version": "0.1.0",
+  "description": "Auvryn MCP server (stdio): a safe agent interface over @auvryn/sdk and the Developer API.",
+  "keywords": [
+    "auvryn",
+    "ai",
+    "onnx",
+    "inference",
+    "execution",
+    "provenance"
+  ],
+  "homepage": "https://auvrynspace.com/developers",
+  "bugs": {
+    "url": "https://github.com/auvryn/developer-tools/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/auvryn/developer-tools.git",
+    "directory": "packages/mcp"
+  },
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "auvryn-mcp": "./dist/main.js"
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.map"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@auvryn/sdk": "workspace:^",
+    "@modelcontextprotocol/server": "^2.2.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "^2.2.0",
+    "@types/node": "^24.19.0",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

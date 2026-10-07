@@ -1,0 +1,5 @@
+packages:
+  - packages/*
+
+# Dependency lifecycle scripts are denied unless explicitly reviewed: none is needed.
+strictDepBuilds: false

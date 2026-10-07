@@ -1,0 +1,58 @@
+{
+  "name": "@auvryn/sdk",
+  "version": "0.1.0",
+  "description": "Auvryn TypeScript SDK for Node.js: typed access to the Auvryn Developer API (v1).",
+  "keywords": [
+    "auvryn",
+    "ai",
+    "onnx",
+    "inference",
+    "execution",
+    "provenance"
+  ],
+  "homepage": "https://auvrynspace.com/developers",
+  "bugs": {
+    "url": "https://github.com/auvryn/developer-tools/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/auvryn/developer-tools.git",
+    "directory": "packages/sdk"
+  },
+  "license": "Apache-2.0",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.map"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "generate": "node scripts/generate.mjs"
+  },
+  "dependencies": {
+    "openapi-fetch": "^0.17.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.0",
+    "openapi-typescript": "^7.13.0",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

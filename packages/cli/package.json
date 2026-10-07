@@ -1,0 +1,53 @@
+{
+  "name": "@auvryn/cli",
+  "version": "0.1.0",
+  "description": "The auvryn command: the Auvryn Developer API from a terminal or CI, built on @auvryn/sdk.",
+  "keywords": [
+    "auvryn",
+    "ai",
+    "onnx",
+    "inference",
+    "execution",
+    "provenance"
+  ],
+  "homepage": "https://auvrynspace.com/developers",
+  "bugs": {
+    "url": "https://github.com/auvryn/developer-tools/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/auvryn/developer-tools.git",
+    "directory": "packages/cli"
+  },
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "auvryn": "./dist/main.js"
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.map"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@auvryn/sdk": "workspace:^",
+    "commander": "^15.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.0",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
