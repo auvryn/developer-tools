@@ -609,7 +609,9 @@ export type paths = {
         put?: never;
         /**
          * Run Auvryn's sample model on the Sample Environment (simulated; 202, poll the job)
-         * @description Required API key scope: `executions:write`.
+         * @description Starts Auvryn's sample model on the Sample Environment and returns the execution job at once (202); follow it with `GET …/execution-jobs/{jobId}`. The execution is **simulated**: no model runs on real hardware, and the job's provenance reports `simulated: true` and `executionEnvironment: simulated`. The body is empty (`{}`): a model or a provider in it is refused (400), so it never runs your own models and never reaches another provider. Needs the workspace capability `sample-workload` (otherwise 403 `ENTITLEMENT_REQUIRED`) and counts toward the daily limit `sample-runs-per-day` (409 `SAMPLE_RUN_LIMIT_REACHED`).
+         *
+         *     Required API key scope: `executions:write`.
          */
         post: operations["startSampleWorkload"];
         delete?: never;
@@ -647,7 +649,9 @@ export type paths = {
         };
         /**
          * List the providers this workspace can use in this environment
-         * @description Any valid API key.
+         * @description Lists only the providers this workspace can use; it is not a catalog of commercial offers. Providers on real infrastructure appear only to a workspace granted access to them; for any other workspace they do not exist, and naming one in a cost estimate or an execution answers `404 PROVIDER_NOT_FOUND`, exactly like an unknown ID. The Sample Environment (`kind: sample`) is simulated. Each provider lists the workspace capabilities it requires (`requiredCapabilities`).
+         *
+         *     Any valid API key.
          */
         get: operations["listProviders"];
         put?: never;
@@ -754,7 +758,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -838,7 +842,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -922,7 +926,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -1015,7 +1019,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -1126,7 +1130,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -1211,7 +1215,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -1295,7 +1299,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -1402,7 +1406,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -1514,7 +1518,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -1532,7 +1536,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description Conflicts with the current state (e.g. `MODEL_SLUG_CONFLICT`, `MODEL_NOT_VALIDATED`), or `Idempotency-Key` reused with another request (`IDEMPOTENCY_CONFLICT`) or still in progress (`IDEMPOTENCY_IN_PROGRESS`). */
+            /** @description Conflicts with the current state (e.g. `MODEL_SLUG_CONFLICT`, `MODEL_NOT_VALIDATED`), a workspace limit reached (`WORKSPACE_LIMIT_REACHED`, `CONCURRENT_RUN_LIMIT_REACHED`, `SAMPLE_RUN_LIMIT_REACHED`), or `Idempotency-Key` reused with another request (`IDEMPOTENCY_CONFLICT`) or still in progress (`IDEMPOTENCY_IN_PROGRESS`). */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -1634,7 +1638,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -1744,7 +1748,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -1888,7 +1892,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -2019,7 +2023,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -2037,7 +2041,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description Conflicts with the current state (e.g. `MODEL_SLUG_CONFLICT`, `MODEL_NOT_VALIDATED`), or `Idempotency-Key` reused with another request (`IDEMPOTENCY_CONFLICT`) or still in progress (`IDEMPOTENCY_IN_PROGRESS`). */
+            /** @description Conflicts with the current state (e.g. `MODEL_SLUG_CONFLICT`, `MODEL_NOT_VALIDATED`), a workspace limit reached (`WORKSPACE_LIMIT_REACHED`, `CONCURRENT_RUN_LIMIT_REACHED`, `SAMPLE_RUN_LIMIT_REACHED`), or `Idempotency-Key` reused with another request (`IDEMPOTENCY_CONFLICT`) or still in progress (`IDEMPOTENCY_IN_PROGRESS`). */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -2158,7 +2162,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -2385,7 +2389,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -2616,7 +2620,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -2634,7 +2638,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description Conflicts with the current state (e.g. `MODEL_SLUG_CONFLICT`, `MODEL_NOT_VALIDATED`), or `Idempotency-Key` reused with another request (`IDEMPOTENCY_CONFLICT`) or still in progress (`IDEMPOTENCY_IN_PROGRESS`). */
+            /** @description Conflicts with the current state (e.g. `MODEL_SLUG_CONFLICT`, `MODEL_NOT_VALIDATED`), a workspace limit reached (`WORKSPACE_LIMIT_REACHED`, `CONCURRENT_RUN_LIMIT_REACHED`, `SAMPLE_RUN_LIMIT_REACHED`), or `Idempotency-Key` reused with another request (`IDEMPOTENCY_CONFLICT`) or still in progress (`IDEMPOTENCY_IN_PROGRESS`). */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -2851,7 +2855,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -3068,7 +3072,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -3193,7 +3197,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -3281,7 +3285,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -3360,7 +3364,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -3472,7 +3476,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -3567,7 +3571,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -3667,7 +3671,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -3685,7 +3689,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description Conflicts with the current state (e.g. `MODEL_SLUG_CONFLICT`, `MODEL_NOT_VALIDATED`), or `Idempotency-Key` reused with another request (`IDEMPOTENCY_CONFLICT`) or still in progress (`IDEMPOTENCY_IN_PROGRESS`). */
+            /** @description Conflicts with the current state (e.g. `MODEL_SLUG_CONFLICT`, `MODEL_NOT_VALIDATED`), a workspace limit reached (`WORKSPACE_LIMIT_REACHED`, `CONCURRENT_RUN_LIMIT_REACHED`, `SAMPLE_RUN_LIMIT_REACHED`), or `Idempotency-Key` reused with another request (`IDEMPOTENCY_CONFLICT`) or still in progress (`IDEMPOTENCY_IN_PROGRESS`). */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -3775,7 +3779,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -3870,7 +3874,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -3975,7 +3979,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -3993,7 +3997,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description Conflicts with the current state (e.g. `MODEL_SLUG_CONFLICT`, `MODEL_NOT_VALIDATED`), or `Idempotency-Key` reused with another request (`IDEMPOTENCY_CONFLICT`) or still in progress (`IDEMPOTENCY_IN_PROGRESS`). */
+            /** @description Conflicts with the current state (e.g. `MODEL_SLUG_CONFLICT`, `MODEL_NOT_VALIDATED`), a workspace limit reached (`WORKSPACE_LIMIT_REACHED`, `CONCURRENT_RUN_LIMIT_REACHED`, `SAMPLE_RUN_LIMIT_REACHED`), or `Idempotency-Key` reused with another request (`IDEMPOTENCY_CONFLICT`) or still in progress (`IDEMPOTENCY_IN_PROGRESS`). */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -4087,7 +4091,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -4180,7 +4184,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -4273,7 +4277,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -4405,7 +4409,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -4574,7 +4578,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -4725,7 +4729,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -4873,7 +4877,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -5004,7 +5008,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -5022,7 +5026,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description Conflicts with the current state (e.g. `MODEL_SLUG_CONFLICT`, `MODEL_NOT_VALIDATED`), or `Idempotency-Key` reused with another request (`IDEMPOTENCY_CONFLICT`) or still in progress (`IDEMPOTENCY_IN_PROGRESS`). */
+            /** @description Conflicts with the current state (e.g. `MODEL_SLUG_CONFLICT`, `MODEL_NOT_VALIDATED`), a workspace limit reached (`WORKSPACE_LIMIT_REACHED`, `CONCURRENT_RUN_LIMIT_REACHED`, `SAMPLE_RUN_LIMIT_REACHED`), or `Idempotency-Key` reused with another request (`IDEMPOTENCY_CONFLICT`) or still in progress (`IDEMPOTENCY_IN_PROGRESS`). */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -5151,7 +5155,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -5376,7 +5380,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -5394,7 +5398,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description Conflicts with the current state (e.g. `MODEL_SLUG_CONFLICT`, `MODEL_NOT_VALIDATED`), or `Idempotency-Key` reused with another request (`IDEMPOTENCY_CONFLICT`) or still in progress (`IDEMPOTENCY_IN_PROGRESS`). */
+            /** @description Conflicts with the current state (e.g. `MODEL_SLUG_CONFLICT`, `MODEL_NOT_VALIDATED`), a workspace limit reached (`WORKSPACE_LIMIT_REACHED`, `CONCURRENT_RUN_LIMIT_REACHED`, `SAMPLE_RUN_LIMIT_REACHED`), or `Idempotency-Key` reused with another request (`IDEMPOTENCY_CONFLICT`) or still in progress (`IDEMPOTENCY_IN_PROGRESS`). */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -5509,7 +5513,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;
@@ -5541,6 +5545,7 @@ export interface operations {
     listProviders: {
         parameters: {
             query?: {
+                /** @description The workspace whose providers to list (one you belong to). An API key lists its own workspace's providers without it. */
                 organizationId?: string;
             };
             header?: never;
@@ -5629,7 +5634,7 @@ export interface operations {
                     "application/json": components["schemas"]["ApiError"];
                 };
             };
-            /** @description The API key lacks the scope (`INSUFFICIENT_SCOPE`). */
+            /** @description Not allowed: the API key lacks the scope (`INSUFFICIENT_SCOPE`), the role of the member does not allow it (`INSUFFICIENT_ROLE`), or the workspace lacks a capability (`ENTITLEMENT_REQUIRED`, `ENTITLEMENT_EXPIRED`). */
             403: {
                 headers: {
                     [name: string]: unknown;

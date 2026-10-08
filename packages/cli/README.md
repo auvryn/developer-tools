@@ -83,8 +83,9 @@ reuse the same key when you retry and nothing is created twice.
 
 ## Output and exit codes
 
-- stdout carries only the result: a table by default, JSON with `--json`.
-- stderr carries progress and errors (`--quiet` silences progress).
+- stdout carries only the result: a table by default, JSON with `--json` (an error then is JSON
+  too: `{"error": {"code", "message", "status", "requestId"}}`).
+- stderr carries progress and, without `--json`, errors (`--quiet` silences progress).
 
 | Exit | Meaning                                                                                                       |
 | ---- | ------------------------------------------------------------------------------------------------------------- |

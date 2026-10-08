@@ -1,0 +1,68 @@
+# End-to-end checks of the packages AS PUBLISHED ON NPM against the production API
+# (e2e/registry/README.md). Manual: run it after a release, with the version to check.
+name: Registry E2E
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version of @auvryn/sdk, @auvryn/cli and @auvryn/mcp to check
+        required: true
+        default: 0.1.0
+
+permissions:
+  contents: read
+
+concurrency:
+  group: registry-e2e
+  cancel-in-progress: false
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    environment: e2e
+    env:
+      AUVRYN_E2E_VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      - name: Validate the version input
+        run: |
+          [[ "${AUVRYN_E2E_VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]] || { echo "Invalid version"; exit 1; }
+
+      - name: Install the three packages from npm (not this workspace)
+        working-directory: e2e/registry
+        run: |
+          npm install --no-save --no-audit --no-fund \
+            "@auvryn/sdk@${AUVRYN_E2E_VERSION}" "@auvryn/cli@${AUVRYN_E2E_VERSION}" \
+            "@auvryn/mcp@${AUVRYN_E2E_VERSION}" "@modelcontextprotocol/client@2.2.0"
+          npm ls @auvryn/sdk @auvryn/cli @auvryn/mcp
+
+      - name: Registry signatures and provenance attestations
+        working-directory: e2e/registry
+        run: npm audit signatures
+
+      - name: SDK
+        working-directory: e2e/registry
+        env:
+          AUVRYN_E2E_API_KEY: ${{ secrets.AUVRYN_E2E_API_KEY }}
+          AUVRYN_E2E_PROJECT_ID: ${{ vars.AUVRYN_E2E_PROJECT_ID }}
+        run: node sdk.mjs
+
+      - name: CLI
+        working-directory: e2e/registry
+        env:
+          AUVRYN_E2E_API_KEY: ${{ secrets.AUVRYN_E2E_API_KEY }}
+          AUVRYN_E2E_PROJECT_ID: ${{ vars.AUVRYN_E2E_PROJECT_ID }}
+        run: node cli.mjs
+
+      - name: MCP
+        working-directory: e2e/registry
+        env:
+          AUVRYN_E2E_API_KEY: ${{ secrets.AUVRYN_E2E_API_KEY }}
+          AUVRYN_E2E_PROJECT_ID: ${{ vars.AUVRYN_E2E_PROJECT_ID }}
+        run: node mcp.mjs

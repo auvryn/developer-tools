@@ -24,5 +24,5 @@ key's scopes).
 
 Each run uses one of the workspace's daily sample runs (5 per UTC day).
 
-Exit codes: `0` completed, `1` API error (code and request ID printed), `2` configuration missing,
+Exit codes: `0` completed, `1` an Auvryn error such as a missing key or an API refusal (its code is printed), `2` `AUVRYN_PROJECT_ID` missing,
 `3` the execution did not complete.

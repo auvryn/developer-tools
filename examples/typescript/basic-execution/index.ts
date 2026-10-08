@@ -23,10 +23,10 @@ if (!projectId) {
   process.exit(2);
 }
 
-// Reads AUVRYN_API_KEY; calls https://api.auvrynspace.com unless AUVRYN_API_URL says otherwise.
-const auvryn = new Auvryn({ userAgent: 'auvryn-example-basic-execution/1.0' });
-
 try {
+  // Reads AUVRYN_API_KEY; calls https://api.auvrynspace.com unless AUVRYN_API_URL says otherwise.
+  const auvryn = new Auvryn({ userAgent: 'auvryn-example-basic-execution/1.0' });
+
   // 1. Create: 202, returns at once. The idempotency key makes a retry safe.
   const started = await auvryn.executions.createSample({
     projectId,

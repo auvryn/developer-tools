@@ -22,5 +22,9 @@ jobs:
       - run: pnpm build
       - run: pnpm typecheck
       - run: pnpm test
-      - name: Pack every package (the exact tarballs a release would publish)
-        run: pnpm -r pack --pack-destination "$RUNNER_TEMP/packs"
+      - name: Nothing tracked changed (lockfile, generated files)
+        run: git diff --exit-code
+      - name: Release guard (packed tarballs, secrets, non-public names, links, production default)
+        run: node scripts/verify-packages.mjs
+      - name: Registry E2E scripts parse
+        run: for f in e2e/registry/*.mjs; do node --check "$f"; done
