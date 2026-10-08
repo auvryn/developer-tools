@@ -1,5 +1,5 @@
 {
-  "source": "f665496b8fba08524158e496bb9cb6ddf48647ae",
+  "source": "8601180889d4b7a5d29538ab941aa7944dcb6d22",
   "files": {
     ".github/workflows/ci.yml": "c29263c948c4ea059a0e26a193f64ba1d5194c697314539954fdba1b42fb9a76",
     ".github/workflows/publish.yml": "fe69ea7b820cf4e87c29490171605ec9f47adb1ab7ef6c19943adb7b1d0ca4bd",
@@ -86,7 +86,7 @@
     "packages/sdk/tsconfig.build.json": "821d0e133ac8a6ac2cd46e3b96356657f79647af2fa0b0ed4db7bfd80cdd9690",
     "packages/sdk/tsconfig.json": "5f243c04519910ddaab48ef31fb31c3bd7be6f3b0b9e70d29af3aead4db09f72",
     "pnpm-workspace.yaml": "b96bff195452388c0eddd56542bac85caf50d8302dfa887ee54f14e0a4addd8c",
-    "README.md": "f12cf4e114f696b22aabcf7694286b724e8f68e13214e96367bc1ce85991f1b6",
+    "README.md": "4105653d3ae5892ae292ad5aa3fa79ce7c01c20e83c35123104d373a87feecf0",
     "scripts/verify-packages.mjs": "e9b055dec926a32bc99f694f945e2b9f583a13bc53c638bf9687c8b4ee89b622",
     "SECURITY.md": "673c51ebe1b9e169cfdad57c0304f018ab6fb7f178ebc90d57e4299e3625fa42",
     "tsconfig.base.json": "8bb00b8036744d9b95c62c53c49d6fbce9174877cd4da74b29fe7db8ff1bee23"

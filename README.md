@@ -4,14 +4,13 @@ The official developer interfaces for [Auvryn](https://auvrynspace.com), provide
 execution infrastructure for AI models: validate ONNX models, run them as durable ExecutionJobs and
 read verified results with provenance and telemetry.
 
-> **Status:** the first release, 0.1.0, is being prepared. The packages are not on npm yet; until
-> they are, the REST API below is the public interface.
+> **Status:** 0.1.0, the first public release, is on npm (pre-1.0: see Versioning).
 
-| Package                       | What it is                                                 |
-| ----------------------------- | ---------------------------------------------------------- |
-| [`@auvryn/sdk`](packages/sdk) | TypeScript SDK for the Developer API (Node.js 24+)         |
-| [`@auvryn/cli`](packages/cli) | `auvryn`, the command line (terminals and CI)              |
-| [`@auvryn/mcp`](packages/mcp) | `auvryn-mcp`, the Model Context Protocol server for agents |
+| Package                       | What it is                                                 | Install                      |
+| ----------------------------- | ---------------------------------------------------------- | ---------------------------- |
+| [`@auvryn/sdk`](packages/sdk) | TypeScript SDK for the Developer API (Node.js 24+)         | `npm install @auvryn/sdk`    |
+| [`@auvryn/cli`](packages/cli) | `auvryn`, the command line (terminals and CI)              | `npm install -g @auvryn/cli` |
+| [`@auvryn/mcp`](packages/mcp) | `auvryn-mcp`, the Model Context Protocol server for agents | `npx -y @auvryn/mcp`         |
 
 All three use the same public REST API, `https://api.auvrynspace.com`
 ([OpenAPI 3.1](https://api.auvrynspace.com/api/v1/openapi.json)), with an API key created in the
