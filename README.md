@@ -14,7 +14,8 @@ read verified results with provenance and telemetry.
 
 All three use the same public REST API, `https://api.auvrynspace.com`
 ([OpenAPI 3.1](https://api.auvrynspace.com/api/v1/openapi.json)), with an API key created in the
-Auvryn web app (**Workspace → Developer → API keys**).
+Auvryn web app (**Workspace → Developer → API keys**). Documentation:
+[auvrynspace.com/developers](https://auvrynspace.com/developers).
 
 ## Start
 
@@ -35,7 +36,8 @@ result, provenance and telemetry.
 
 - Node.js 24 or later; ES modules only (no CommonJS build).
 - Your own models can be uploaded, validated and tested in Auvryn's isolated sandbox; running them
-  needs a provider your workspace was granted.
+  needs a provider your workspace was granted. To check a model locally first, see
+  [how to validate an ONNX model](https://auvrynspace.com/validate-onnx-model).
 - The Sample Environment allows a few runs per workspace per day.
 - No hosted MCP endpoint: the MCP server runs locally over stdio.
 
